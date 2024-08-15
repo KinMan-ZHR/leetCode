@@ -1,3 +1,5 @@
+package array;
+
 public class TrainingGrounds {
     /**
      * 35 搜索插入位置
