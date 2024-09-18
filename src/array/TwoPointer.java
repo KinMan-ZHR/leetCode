@@ -1,6 +1,8 @@
 package array;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TwoPointer {
     /**
@@ -43,8 +45,8 @@ public class TwoPointer {
 
         }
     /**
-     * 固定窗口(本质：维持一定的条件(连续空间),移动拓展，动态规划)
-     * 控制窗口大小，寻找最大数组和
+     * 可迭代可求局部最优解(本质：维持一定的条件(连续空间),移动拓展，动态规划)
+     * 控制窗口大小，寻找最大数组和(简单遍历而已)
      * @param nums  输入数组
      * @param k 窗口大小
      * @return 窗口最大值数组
@@ -89,6 +91,49 @@ public class TwoPointer {
         }
         return result == Integer.MAX_VALUE ? 0 : result;
     }
+    /**
+     * 三数之和
+     * @param nums 输入数组
+     * @return 不重复的三元组
+     *
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        // 找出a + b + c = 0
+        // a = nums[i], b = nums[left], c = nums[right]
+        for (int i = 0; i < nums.length; i++) {
+            // 排序之后如果第一个元素已经大于零，那么无论如何组合都不可能凑成三元组，直接返回结果就可以了
+            if (nums[i] > 0) {
+                return result;
+            }
+
+            if (i > 0 && nums[i] == nums[i - 1]) {  // 去重a
+                continue;
+            }
+
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (right > left) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum > 0) {
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    // 去重逻辑应该放在找到一个三元组之后，对b 和 c去重
+                    while (right > left && nums[right] == nums[right - 1]) right--;
+                    while (right > left && nums[left] == nums[left + 1]) left++;
+
+                    right--;
+                    left++;
+                }
+            }
+        }
+        return result;
+    }
+
 
 
 
